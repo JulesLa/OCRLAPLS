@@ -1,6 +1,5 @@
 // Neurone.c
 
-#include <stdio.h>
 #include "neurone.h"
 
 Neurone *initNeurone(int nbrSynapses)
@@ -45,7 +44,7 @@ NeuralNetwork *initNeuralNetwork(int nbrLayers, int *neuronesPerLayer)
 	return neuralNetwork;
 }
 
-double *weightSum(NeuralNetwork *neuralNetwork, int layerIndex ,Neurone neuron)
+double weightSum(NeuralNetwork *neuralNetwork, int layerIndex ,Neurone neuron)
 {
 	double sommePonderee = 0;
 	for (int i = 0; i < neuralNetwork->layersList[layerIndex - 1].nbrNeurones; i++)
@@ -89,7 +88,7 @@ void backward(NeuralNetwork *neuralNetwork, double *expectedResult)		//This func
 	{
 		for (int j = 0; j < penultimate.nbrNeurones; j++) //DO je crois
 		{
-      currentresult = lastLayer.neuronesList[i].result;
+      currentResult = lastLayer.neuronesList[i].result;
 			lastLayer.neuronesList[i].errorPace = (expectedResult[i] - currentResult) * currentResult * (1 - currentResult);
 			lastLayer.neuronesList[i].exitWeights[j] += pasDapprentissage * lastLayer.neuronesList[i].errorPace * penultimate.neuronesList[j].result;
 		}
@@ -112,33 +111,44 @@ void backward(NeuralNetwork *neuralNetwork, double *expectedResult)		//This func
 					sum += (nextLayer.neuronesList[k].errorPace * nextLayer.neuronesList[k].exitWeights[i]);
 				}
 				currentLayer.neuronesList[i].errorPace = sigmoidDerived * sum;
-				currentLayer.neuronesList[i].exitWeights[j] = pasDapprentissage * errorSignal * previousLayer.neuronesList[j].result;
+				currentLayer.neuronesList[i].exitWeights[j] = pasDapprentissage * /*errorSignal */ previousLayer.neuronesList[j].result;
 			}
 		}
 	}	
 }
 
+static int equal (double *result, double *output, int nboutput)
+{
+  int t = 1;
+  for(int i = 0; t == 1 && i < nboutput; i++)
+  {
+    if(!((output[i] == 1 && result[i] > 0.9) || (output[i] == 0 && result[i] < 0.1)))
+      t = 0;
+  }
+  return t;
+}
 
-void train(double **input, int nbinput, double **output, int nboutput, neuralNetwork *neuralNetwork)
+void train(double **input, int nbinput, double **output, int nboutput, NeuralNetwork *neuralNetwork)
 {
   int res = 0;
+  double *result = malloc(sizeof(double)*nboutput);
   while(res < nbinput)
   {
     for(int i = 0; i < nbinput && res < nbinput; i++)
     {
-      for(int j = 0; j < neuralNetwork->layerList[0].nbrNeurones ; j++)
+      for(int j = 0; j < neuralNetwork->layersList[0].nbrNeurones ; j++)
       {
-        neuralNetwork->layerList[0]->neuronesList[j]->result = input[i][j];
+        neuralNetwork->layersList[0].neuronesList[j].result = input[i][j];
       }
 
-      double *result = malloc(sizeof(double)*nboutput);
-      forward(neuralnetwork, result);
-      backward(neuralNetwork, ouput[i]);
+      forward(neuralNetwork, result);
+      backward(neuralNetwork, output[i]);
 
-      if(equal(result, output[i])) 
+      if(equal(result, output[i], nboutput)) 
         res++;
       else 
         res = 0;
     }
   }
+  free(result);
 }

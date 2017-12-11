@@ -3,33 +3,32 @@
 #include <time.h>
 #include <math.h>
 
-typedef struct Neurone Neurone;
-struct Neurone
+typedef struct Neurone
 {
   int nbrSynapses;
   double *exitWeights;
-  double bias;
+  double biais;
   double errorPace;
   double result;
-}
+} Neurone;
 
-typedef struct Layer Layer;
-struct Layer
+typedef struct Layer
 {
   int nbrNeurones;
   Neurone *neuronesList;
-}
+} Layer;
 
-typedef struct NeuralNetwork NeuralNetwork;
-struct NeuralNetwork
+typedef struct NeuralNetwork
 {
   int nbrLayers;
   Layer *layersList;
-}
+} NeuralNetwork;
 
 Neurone *initNeurone(int nbrSynapses);
 
-double *weightSum(NeuralNetwork *neuralNetwork, int layerIndex, Neurone neuron);
+NeuralNetwork *initNeuralNetwork(int nbrLayers, int *neuronesPerLayer);
+
+double weightSum(NeuralNetwork *neuralNetwork, int layerIndex, Neurone neuron);
 
 void forward(NeuralNetwork *neuralNetwork, double *result);
 
@@ -39,5 +38,5 @@ void train(double **input,
            int nbinput, 
            double **output, 
            int nboutput,
-           neuralNetwork *neuralNetwork);
+           NeuralNetwork *neuralNetwork);
 
