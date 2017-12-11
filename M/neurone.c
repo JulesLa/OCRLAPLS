@@ -152,3 +152,5 @@ void train(double **input, int nbinput, double **output, int nboutput, NeuralNet
   }
   free(result);
 }
+
+void killNetwork(neuralNetwork *net
