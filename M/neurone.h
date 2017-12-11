@@ -40,3 +40,4 @@ void train(double **input,
            int nboutput,
            NeuralNetwork *neuralNetwork);
 
+void killnetwork(NeuralNetwork *net);

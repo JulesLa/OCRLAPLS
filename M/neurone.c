@@ -153,4 +153,16 @@ void train(double **input, int nbinput, double **output, int nboutput, NeuralNet
   free(result);
 }
 
-void killNetwork(neuralNetwork *net
+void killNetwork(NeuralNetwork *net)
+{
+  for(int i = 0; i < nbrLayers; i++)
+  {
+    for(int j = 0; j < net->layersList[i].nbrNeurones; j++)
+    {
+      free(net->layersList[i].neuronesList[j].exitWeight);
+    }
+    free(net->layersList[i].neuronesList);
+  }
+  free(net->layersList);
+  free(net);
+}
