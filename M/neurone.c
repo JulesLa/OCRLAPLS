@@ -1,31 +1,7 @@
 // Neurone.c
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <math.h>		//	<!>	Add -lm to Makefile	<!>
-
-
-typedef struct Neurone Neurone;
-struct Neurone{
-	int nbrSynapses;		
-	double *exitWeights;	
-	double biais;			//ou pas d'apprentissage
-	double errorPace;	
-	double result;
-};
-
-typedef struct Layer Layer;
-struct Layer{
-	int nbrNeurones; 
-	Neurone *neuronesList;
-};
-
-typedef struct NeuralNetwork NeuralNetwork;
-struct NeuralNetwork{
-	int nbrLayers;
-	Layer *layersList;
-};
+#include "neurone.h"
 
 Neurone *initNeurone(int nbrSynapses)
 {
@@ -165,13 +141,4 @@ void train(double **input, int nbinput, double **output, int nboutput, neuralNet
         res = 0;
     }
   }
-}
-
-
-
-
-int main(void)
-{
-	printf("HELP");
-	return 1;
 }
