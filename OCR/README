@@ -1,0 +1,20 @@
+[OCR Project]
+=============
+
+This is an epita project.
+
+To use :
+
+Use "make" in the shell in order to make the project.
+
+USAGE : ./main -> give the train of the XOR neuronal network
+									and the weights
+
+USAGE : ./main [path/image] -> print image
+														-> print horizontal segmentation and
+															 the following histogram
+														-> print vertical segmentation and 
+															 the following histogram 
+														-> all the characters in the image
+
+===============
